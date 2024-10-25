@@ -135,5 +135,138 @@ Thanks for using MariaDB!
 2. Utiliza esta guía para instalar wordpress en el contenedor.
 
 
+    Dentro del contenedor que creamos en el primer punto, seguimos con estos pasos:
+
+    apt install ghostscript 
+
+    apt install libapache2-mod-php
+
+    apt install mysql-server
+
+    apt install php
+
+    apt install php-bcmath
+
+    apt install php-curl
+  
+    apt install php-imagick  
+
+    apt install php-intl
+
+    apt install php-json
+
+    apt install php-mbstring
+
+    apt install php-mysql
+
+    apt install php-xml
+
+    apt install php-zip
+ 
+    Ahora creamos la instalacion para el directorio:
+
+    mkdir -p /srv/www
+
+    chown www-data: /srv/www
+
+    curl https://wordpress.org/latest.tar.gz | tar zx -C /srv/www
+<details>
+
+root@107384a620ee:/# curl https://wordpress.org/latest.tar.gz | tar zx -C /srv/www
+
+| % Total | % Received | % Xferd | Average Speed | Time | Time | Time | Current |
+|---------|------------|---------|---------------|------|------|------|---------|
+|         |            |         |               | Dload| Upload| Total| Spent   | Left | Speed |
+| 100 23.4M | 100 23.4M | 0 | 6372k | 0:00:03 | 0:00:03 | --:--:-- | 6370k |
+
+</details>
+  
+    Ahora usamos echo para crear el archivo /etc/apache2/sites-available/wordpress.conf
+    y redirigimos la configuracion a este archivo
+
+    cat <<EOF > /etc/apache2/sites-available/wordpress.conf
+
+    Dentro de este archivo añadimos lo siguiente:
+
+<details>
+
+    <VirtualHost *:80>
+      DocumentRoot /srv/www/wordpress
+      <Directory /srv/www/wordpress>
+          Options FollowSymLinks
+          AllowOverride Limit Options FileInfo
+          DirectoryIndex index.php
+          Require all granted
+      </Directory>
+      <Directory /srv/www/wordpress/wp-content>
+          Options FollowSymLinks
+          Require all granted
+      </Directory>
+    </VirtualHost>
+    EOF
+
+</details>
+
+    Ahora habilitamos wordpress, pero antes tenemos que reiniciar apache2
+
+    service apache2 reload
+
+    Ahora habilitamos el sitio de wordpress
+
+    a2ensite wordpress
+
+    a2enmod rewrite
+
+    Ahora tenemos que reiniciar de nuevo apache2
+
+    service apache2 restart
+
+    a2dissite 000-default
+
+    Por ultimo reiciamos apache2 de nuevo
+
+    service apache2 reload
+
+<details>
+
+root@107384a620ee:/# service apache2 reload
+* Reloading Apache httpd web server apache2                                                          *
+* Apache2 is not running
+  root@107384a620ee:/# a2ensite wordpress
+  Enabling site wordpress.
+  To activate the new configuration, you need to run:
+  service apache2 reload
+  root@107384a620ee:/# service apache2 start
+* Starting Apache httpd web server apache2                                                          AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.17.0.2. Set the 'ServerName' directive globally to suppress this message
+*
+root@107384a620ee:/# service apache2 reload
+* Reloading Apache httpd web server apache2                                                          *
+  root@107384a620ee:/# a2ensite wordpress
+  Site wordpress already enabled
+  root@107384a620ee:/# a2enmod rewrite
+  Enabling module rewrite.
+  To activate the new configuration, you need to run:
+  service apache2 restart
+  root@107384a620ee:/# service apache2 restart
+* Restarting Apache httpd web server apache2                                                        AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.17.0.2. Set the 'ServerName' directive globally to suppress this message
+  [ OK ]
+  root@107384a620ee:/# a2dissite 000-default
+  Site 000-default disabled.
+  To activate the new configuration, you need to run:
+  service apache2 reload
+  root@107384a620ee:/# service apache2 reload
+* Reloading Apache httpd web server apache2                                                          *
+  root@107384a620ee:/#
+
+</details>
+
+
 
 3. Comprueba que puedes acceder a wordpress. 
+
+
+    Desde el navegador:
+
+    http://localhost:8080/wp-admin/setup-config.php
+
+![Apache](Fotos/wordpress.png)
