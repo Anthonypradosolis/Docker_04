@@ -15,12 +15,16 @@ DOCKER 04
     Con este comando arrancamos el contenedor y entramos en el:
 
     // --attach: adjunta la salida estandar y de error del contenedor al terminal actual,
+
     // permitiendo ver la salida del contenedor en tiempo real.
+
     // -i: mantiene la entrada estandar abierta, lo que permite 
+
     // interactuar con el     contenedor.
+
     sudo docker container start --attach -i dam_lamp
 
-    Con este comando instalamos los paquetes necesarios para LAMP, todo dentro del contenedor:  
+    Con este comando instalamos los paquetes necesarios para LAMP, todo dentro del contenedor:
     Seguimos los pasos de la guía:
     apt update
 
