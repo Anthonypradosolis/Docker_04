@@ -420,3 +420,11 @@ root@107384a620ee:/# service apache2 reload
 ![Apache](Fotos/wordpress_segunda.png)
 
 ![Apache](Fotos/wordpress_tercera.png)
+
+<br>
+
+<div  style="text-align: center">
+
+#    ¡Gracias por ver este tutorial, espero que os haya servido de ayuda!
+
+</div>
