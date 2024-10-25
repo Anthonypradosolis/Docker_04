@@ -35,7 +35,7 @@ DOCKER 04
     service mariadb start
 
     mysql_secure_installation
-<details open>  
+<details >  
     root@107384a620ee:/# mysql_secure_installation
 
 NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
