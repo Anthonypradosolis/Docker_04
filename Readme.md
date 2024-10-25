@@ -124,8 +124,9 @@ Thanks for using MariaDB!
     http://localhost:8080
     http://localhost:8080/info.php
   
-    ![Apache](Fotos/ubuntu.png)
-    ![Apache](Fotos/fotosphp.png)
+![Apache](Fotos/ubuntu.png)
+
+![Apache](Fotos/fotophp.png)
 
 2. Utiliza esta guía para instalar wordpress en el contenedor.
 
