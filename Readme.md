@@ -1,31 +1,37 @@
-DOCKER 04
+<div  style="text-align: center">
+  
+# DOCKER 04 - LAMP
+
+</div>
+
+<br>
+
+<div  style="text-align: center">
 
 
-1. Utiliza la imagen de Ubuntu , tag 22 y apoyandote en esta guía sigue sus instrucciones para instalar LAMP en dicho contenedor.
+## 1. Utiliza la imagen de Ubuntu , tag 22 y apoyandote en esta guía sigue sus instrucciones para instalar LAMP en dicho contenedor.
+
+</div>
 
     
     Con este comando descargamos la imagen de ubuntu 22.04:
-
+```bash
     sudo docker pull ubuntu:22.04
-
+```
     Con este comando creamos el contenedor dam_lamp con la imagen de arriba y añadimos los puertos
 
     sudo docker container create -i -t -p 8080:80 --name dam_lamp ubuntu:22.04    
 
     Con este comando arrancamos el contenedor y entramos en el:
 
-    // --attach: adjunta la salida estandar y de error del contenedor al terminal actual,
+    info: --attach: adjunta la salida estandar y de error del contenedor al terminal actual, permitiendo ver la salida del contenedor en tiempo real.
 
-    // permitiendo ver la salida del contenedor en tiempo real.
-
-    // -i: mantiene la entrada estandar abierta, lo que permite 
-
-    // interactuar con el     contenedor.
+    info: -i: mantiene la entrada estandar abierta, lo que permite interactuar con el contenedor.
 
     sudo docker container start --attach -i dam_lamp
 
     Con este comando instalamos los paquetes necesarios para LAMP, todo dentro del contenedor:
-    Seguimos los pasos de la guía:
+
     apt update
 
     apt install -y apache2 apache2-utils
@@ -132,9 +138,13 @@ Thanks for using MariaDB!
 
 ![Apache](Fotos/fotophp.png)
 
-2. Utiliza esta guía para instalar wordpress en el contenedor.
+<br>
 
+<div  style="text-align: center">
 
+## 2. Utiliza esta guía para instalar wordpress en el contenedor.
+
+</div>
     Dentro del contenedor que creamos en el primer punto, seguimos con estos pasos:
 
     apt install ghostscript 
@@ -260,13 +270,153 @@ root@107384a620ee:/# service apache2 reload
 
 </details>
 
+    Ahora tenemos que configurar la base de datos para wordpress
 
+    Por un error tuve que volver a instalar mariadb : apt isntall -y mariadb-server mariadb-client
 
-3. Comprueba que puedes acceder a wordpress. 
+    mysql -u root
 
+    CREATE DATABASE wordpress;
 
+    CREATE USER 'anxo' IDENTIFIED BY '1234';
+
+    GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER ON wordpress.* TO 'anxo';
+    
+    FLUSH PRIVILEGES;
+    
+    QUIT;
+
+    Ahora creamos el archivo de configuracion de wordpress
+
+    touch /srv/www/wordpress/wp-config.php
+  
+    Tenemos que instalar el nano:
+
+    apt install nano
+
+    nano /srv/www/wordpress/wp-config.php
+
+    Dentro de este archivo añadimos lo siguiente:
+
+<details>
+
+```php
+
+  <?php
+  /**
+   * The base configuration for WordPress
+     *
+     * The wp-config.php creation script uses this file during the installation.
+     * You don't have to use the website, you can copy this file to "wp-config.php"
+     * and fill in the values.
+     *
+     * This file contains the following configurations:
+     *
+  * * Database settings
+  * * Secret keys
+  * * Database table prefix
+  * * ABSPATH
+   *
+     * @link https://developer.wordpress.org/advanced-administration/wordpress/wp-config/
+     *
+     * @package WordPress
+     */
+  
+  // ** Database settings - You can get this info from your web host ** //
+  /** The name of the database for WordPress */
+  define( 'DB_NAME', 'wordpress' );
+  
+  /** Database username */
+  define( 'DB_USER', 'anxo' );
+  
+  /** Database password */
+  define( 'DB_PASSWORD', '1234' );
+  
+  /** Database hostname */
+  define( 'DB_HOST', 'localhost' );
+  
+  /** Database charset to use in creating database tables. */
+  define( 'DB_CHARSET', 'utf8mb4' );
+  
+  /** The database collate type. Don't change this if in doubt. */
+  define( 'DB_COLLATE', '' );
+  
+  /**#@+
+  * Authentication unique keys and salts.
+   *
+   * Change these to different unique phrases! You can generate these using
+   * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
+   *
+   * You can change these at any point in time to invalidate all existing cookies.
+   * This will force all users to have to log in again.
+   *
+   * @since 2.6.0
+   */
+  define( 'AUTH_KEY',         's[u1wXGyctU,mlo?e]@9oF8H5 2TvN{cXIW$Bka$2y1mHiewl^#wbs?5^w}bqiZV' );
+  define( 'SECURE_AUTH_KEY',  '%c|p_{W18!)`0Z-;$o[0_Gw!>FcjP,lRJXi/M1[?#>o0:p[@su$]P=DIR}$BqjG(' );
+  define( 'LOGGED_IN_KEY',    'G.ui.lm42ILdmyeWLg)~:rO,6o`gkUeDKq9]$7x$snYHW6!I0>A3cRK~!x ]` z<' );
+  define( 'NONCE_KEY',        '[xUHnT-um:]H;X._l7p_#J!T3M`Iy]Od%%.*ImS~2_Z{?s)2t). 6GQie0,;Y!n4' );
+  define( 'AUTH_SALT',        '_p7zJt7xK1O6Ap{&J,a#2{eFlCLKi*ZMw3A!1bR#WT?@srOmM$e);X<+ia]<`b?a' );
+  define( 'SECURE_AUTH_SALT', '%3{{P[$)R5dLwk=uE3NcPo]`;f`ND5oO!@E.cc9`.X/Qgz719lt.0uP:UuB56CKu' );
+  define( 'LOGGED_IN_SALT',   '8x&Xtei=>P#7NI@f,yGOS7-9V}LMKS/-X^UiVLzKlV8GQBv8%I[#f7^nP^~N/7N3' );
+  define( 'NONCE_SALT',       'OLK3Lg|^p|&<p~{{B8@g%t/a}wXpV(R(HETQ7Y1o}YiW&@[a#%4Gs1|b*j?RoZ1.' );
+  
+  /**#@-*/
+  
+  /**
+  * WordPress database table prefix.
+   *
+   * You can have multiple installations in one database if you give each
+   * a unique prefix. Only numbers, letters, and underscores please!
+   */
+  $table_prefix = 'wp_';
+  
+  /**
+  * For developers: WordPress debugging mode.
+   *
+   * Change this to true to enable the display of notices during development.
+   * It is strongly recommended that plugin and theme developers use WP_DEBUG
+   * in their development environments.
+   *
+   * For information on other constants that can be used for debugging,
+   * visit the documentation.
+   *
+   * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
+   */
+  define( 'WP_DEBUG', false );
+  
+  /* Add any custom values between this line and the "stop editing" line. */
+  
+  
+  
+  /* That's all, stop editing! Happy publishing. */
+  
+  /** Absolute path to the WordPress directory. */
+  if ( ! defined( 'ABSPATH' ) ) {
+    define( 'ABSPATH', __DIR__ . '/' );
+  }
+  
+  /** Sets up WordPress vars and included files. */
+  require_once ABSPATH . 'wp-settings.php';
+
+```
+</details>
+
+<br>
+
+<div  style="text-align: center">
+
+## 3. Comprueba que puedes acceder a wordpress. 
+
+</div>
     Desde el navegador:
 
     http://localhost:8080/wp-admin/setup-config.php
 
 ![Apache](Fotos/wordpress.png)
+
+    Por ultimo entramos en wordpress:
+
+![Apache](Fotos/wordpress_segunda.png)
+
+![Apache](Fotos/wordpress_tercera.png)
