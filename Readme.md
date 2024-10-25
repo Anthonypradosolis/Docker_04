@@ -3,15 +3,25 @@ DOCKER 04
 
 1. Utiliza la imagen de Ubuntu , tag 22 y apoyandote en esta guía sigue sus instrucciones para instalar LAMP en dicho contenedor.
 
+    
+    Con este comando descargamos la imagen de ubuntu 22.04:
 
     sudo docker pull ubuntu:22.04
 
+    Con este comando creamos el contenedor dam_lamp con la imagen de arriba y añadimos los puertos
+
     sudo docker container create -i -t -p 8080:80 --name dam_lamp ubuntu:22.04    
 
+    Con este comando arrancamos el contenedor y entramos en el:
+
+    // --attach: adjunta la salida estandar y de error del contenedor al terminal actual,
+    // permitiendo ver la salida del contenedor en tiempo real.
+    // -i: mantiene la entrada estandar abierta, lo que permite 
+    // interactuar con el     contenedor.
     sudo docker container start --attach -i dam_lamp
 
-    Ahora estamos dentro del contenedor:
-
+    Con este comando instalamos los paquetes necesarios para LAMP, todo dentro del contenedor:  
+    Seguimos los pasos de la guía:
     apt update
 
     apt install -y apache2 apache2-utils
@@ -21,9 +31,9 @@ DOCKER 04
     service mariadb start
 
     mysql_secure_installation
-
-    root@107384a620ee:/# mysql_secure_installation
 <details open>  
+    root@107384a620ee:/# mysql_secure_installation
+
 NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
 SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
 
@@ -113,7 +123,9 @@ Thanks for using MariaDB!
 
     http://localhost:8080
     http://localhost:8080/info.php
-
+  
+    ![Apache](Fotos/ubuntu.png)
+    ![Apache](Fotos/fotosphp.png)
 
 2. Utiliza esta guía para instalar wordpress en el contenedor.
 
