@@ -15,9 +15,9 @@
 
     
     Con este comando descargamos la imagen de ubuntu 22.04:
-```bash
+
     sudo docker pull ubuntu:22.04
-```
+
     Con este comando creamos el contenedor dam_lamp con la imagen de arriba y añadimos los puertos
 
     sudo docker container create -i -t -p 8080:80 --name dam_lamp ubuntu:22.04    
